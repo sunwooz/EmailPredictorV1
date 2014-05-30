@@ -27,11 +27,35 @@ describe EmailPredictor do
   describe "#predict_email" do
     let(:ep) { EmailPredictor.new(training_data) }
 
-    context "given a person's workplace where the data is available" do
+    context "given a person's workplace with available data" do
 
-      it "should return the proper email for google employees" do
-        expect( ep.predict_email("Peter Wong", "alphasights.com") ).to eq("peter.wong@alphasights.com")
+      it "should return an array" do
+        expect(ep.predict_email).to be_kind_of(Array)
       end
+
+      context "for alphasights employees" do
+        it "should return the proper email" do
+          expect( ep.predict_email("Peter Wong", "alphasights.com") ).to eq("peter.wong@alphasights.com")
+        end
+      end
+      
+      context "for google employees" do
+        it "should return two different email versions" do
+          expect( ep.predict_email("Craig Silverstein", "google.com").size ).to eq(2)
+        end
+
+        it "should return the proper email for alphasight employees" do
+          let(:google_result) { ep.predict_email("Craig Silverstein", "google.com") }
+
+          expect( google_result ).to eq( ["craig.s@google.com", "c.silverstein@google.com" ] )
+        end
+      end
+
+      
+
+      # "Craig Silverstein", "google.com"
+# "Steve Wozniak", "apple.com"
+# "Barack Obama", "whitehouse.gov"
 
     end
 
