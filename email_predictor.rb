@@ -1,4 +1,3 @@
-require 'pry'
 require 'ap'
 
 class EmailPredictor
@@ -117,7 +116,7 @@ training_data = {
 }
 
 ep = EmailPredictor.new(training_data)
-ap ep.training_data
+
 ap ep.predict_email("Sunwoo Yang", "whatever.com")
 ap ep.predict_email("Sunwoo Yang", "Alphasights.com")
 ap ep.predict_email("Daniel Ferguson", "google.com")
