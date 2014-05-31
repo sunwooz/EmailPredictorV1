@@ -85,13 +85,14 @@ class EmailPredictor
         fidli: "#{f_name[0]}.#{l_name[0]}@#{work_domain}"
       }
 
-      if pattern == "first_name_dot_last_name"
+      case pattern
+      when "first_name_dot_last_name"
         email = possible_patterns[:fndln]
-      elsif pattern == "first_name_dot_last_initial"
+      when "first_name_dot_last_initial"
         email = possible_patterns[:fndli]
-      elsif pattern == "first_initial_dot_last_name"
+      when "first_initial_dot_last_name"
         email = possible_patterns[:fidln]
-      elsif pattern == "first_initial_dot_last_initial"
+      when "first_initial_dot_last_initial"
         email = possible_patterns[:fidli]
       end
 
@@ -118,6 +119,7 @@ training_data = {
 }
 
 ep = EmailPredictor.new(training_data)
+ap ep.training_data
 
 ap ep.predict_email("Sunwoo Yang", "whatever.com")
 ap ep.predict_email("Sunwoo Yang", "Alphasights.com")
