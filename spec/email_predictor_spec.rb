@@ -1,5 +1,8 @@
+require 'simplecov'
+SimpleCov.start
 require_relative 'spec_helper'
 require_relative '../email_predictor'
+
 
 describe EmailPredictor do
   let(:training_data) do
@@ -20,7 +23,7 @@ describe EmailPredictor do
 
       it "#training_data should be a hash" do
         expect(ep.training_data).to be_kind_of(Hash)
-      end 
+      end
 
     end
 
