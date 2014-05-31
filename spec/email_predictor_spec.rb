@@ -163,8 +163,41 @@ describe EmailPredictor do
         ep.send(:convert_pattern_to_email, f_name, l_name, fndln_pattern, work_domain)
       end
 
-      it "should return the correctly formatted email" do
+      it "should return sunwoo.yang@google.com" do
         expect( converted_fndln ).to eq("sunwoo.yang@google.com")
+      end
+    end
+
+    context "given first_name_dot_last_initial" do
+      let(:fndli_pattern) { "first_name_dot_last_initial" }
+      let(:converted_fndli) do
+        ep.send(:convert_pattern_to_email, f_name, l_name, fndli_pattern, work_domain)
+      end
+
+      it "should return sunwoo.y@google.com" do
+        expect( converted_fndli ).to eq("sunwoo.y@google.com")
+      end
+    end
+
+    context "given first_initial_dot_last_name" do
+      let(:fidln_pattern) { "first_initial_dot_last_name" }
+      let(:converted_fidln) do
+        ep.send(:convert_pattern_to_email, f_name, l_name, fidln_pattern, work_domain)
+      end
+
+      it "should return s.yang@google.com" do
+        expect( converted_fidln ).to eq("s.yang@google.com")
+      end
+    end
+
+    context "given first_initial_dot_last_name" do
+      let(:fidli_pattern) { "first_initial_dot_last_initial" }
+      let(:converted_fidli) do
+        ep.send(:convert_pattern_to_email, f_name, l_name, fidli_pattern, work_domain)
+      end
+
+      it "should return s.y@google.com" do
+        expect( converted_fidli ).to eq("s.y@google.com")
       end
     end
 
