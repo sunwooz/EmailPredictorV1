@@ -22,5 +22,5 @@ ep = EmailPredictor.new(training_data)
 Call #predict_email with the name of the person and and their workplace domain name as arguments.
 
 ```ruby
-ep.predict_email("Sunwoo Yang", "google.com") #=> ["sunwoo.y@google.com", "s.yang@gmail.com"]
+ep.predict_email("Sunwoo Yang", "google.com") #=> ["sunwoo.y@google.com", "s.yang@google.com"]
 ```
