@@ -1,4 +1,5 @@
 require 'ap'
+require 'pry'
 
 class EmailPredictor
 
@@ -9,6 +10,7 @@ class EmailPredictor
   end
 
   def predict_email(name, work_domain)
+    work_domain = work_domain.downcase
     return "No data availble for #{work_domain}" if !data_available?(work_domain)
 
     f_name, l_name = *split_name(name)
