@@ -15,12 +15,9 @@ class EmailPredictor
 
     f_name, l_name = *split_name(name)
 
-    possible_emails = []
-    @training_data[work_domain].each do |pattern| 
-      possible_emails << convert_pattern_to_email(f_name, l_name, pattern, work_domain)
+    @training_data[work_domain].map do |pattern| 
+      convert_pattern_to_email(f_name, l_name, pattern, work_domain)
     end
-
-    possible_emails
   end
 
   private
@@ -54,7 +51,8 @@ class EmailPredictor
     end
 
     def split_name(name)
-      name.downcase.split(" ")
+      name_array = name.downcase.split(" ")
+      [ name_array.first, name_array.last ]
     end
 
     def check_first_name_dot_last_name(f_name, l_name, email)
@@ -121,6 +119,7 @@ training_data = {
 ep = EmailPredictor.new(training_data)
 ap ep.training_data
 
+ap ep.predict_email("Sun Woo Yang", "alphaSights.com")
 ap ep.predict_email("Sunwoo Yang", "whatever.com")
 ap ep.predict_email("Sunwoo Yang", "Alphasights.com")
 ap ep.predict_email("Daniel Ferguson", "google.com")
