@@ -1,5 +1,4 @@
-require 'ap'
-require 'pry'
+puts require 'pry'
 
 class EmailPredictor
 
@@ -117,17 +116,16 @@ training_data = {
 }
 
 ep = EmailPredictor.new(training_data)
-ap ep.training_data
 
-ap ep.predict_email("Sun Woo Yang", "alphaSights.com")
-ap ep.predict_email("Sunwoo Yang", "whatever.com")
-ap ep.predict_email("Sunwoo Yang", "Alphasights.com")
-ap ep.predict_email("Daniel Ferguson", "google.com")
-ap ep.predict_email("George Fesati", "apple.com")
-ap ep.predict_email("Peter Wong", "alphasights.com")
-ap ep.predict_email("Craig Silverstein", "google.com")
-ap ep.predict_email("Steve Wozniak", "apple.com")
-ap ep.predict_email("Barack Obama", "whitehouse.gov")
+puts ep.predict_email("Sun Woo Yang", "alphaSights.com")
+puts ep.predict_email("Sunwoo Yang", "whatever.com")
+puts ep.predict_email("Sunwoo Yang", "Alphasights.com")
+puts ep.predict_email("Daniel Ferguson", "google.com")
+puts ep.predict_email("George Fesati", "apple.com")
+puts ep.predict_email("Peter Wong", "alphasights.com")
+puts ep.predict_email("Craig Silverstein", "google.com")
+puts ep.predict_email("Steve Wozniak", "apple.com")
+puts ep.predict_email("Barack Obama", "whitehouse.gov")
 
 
 
