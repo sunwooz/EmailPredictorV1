@@ -1,5 +1,3 @@
-puts require 'pry'
-
 class EmailPredictor
 
   attr_reader :training_data
