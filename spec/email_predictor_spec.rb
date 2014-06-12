@@ -1,41 +1,21 @@
-require 'simplecov'
-SimpleCov.start
 require_relative 'spec_helper'
-require_relative '../email_predictor'
+require_relative '../model/email_predictor'
 
 
 describe EmailPredictor do
-  let(:training_data) do
+  let(:workplace_email_formats) do
     {
-      "John Ferguson" => "john.ferguson@alphasights.com",
-      "Damon Aw" => "damon.aw@alphasights.com",
-      "Linda Li" => "linda.li@alphasights.com",
-      "Larry Page" => "larry.p@google.com",
-      "Sergey Brin" => "s.brin@google.com",
-      "Steve Jobs" => "s.j@apple.com"
+      "alphasights.com" => [:first_name_dot_last_name],
+      "google.com" => [ :first_name_dot_last_initial, :first_initial_dot_last_name],
+      "apple.com" => [:first_initial_dot_last_initial]
     }
   end
-  let(:ep) { EmailPredictor.new(training_data) }
-
-  describe "#initialize" do
-
-    context "given training data that is a hash" do
-
-      it "#training_data should be a hash" do
-        expect(ep.training_data).to be_kind_of(Hash)
-      end
-
-    end
-
-  end
+  
+  let(:ep) { EmailPredictor.new(workplace_email_formats) }
 
   describe "#predict_email" do
 
     context "given a person's workplace with available data" do
-
-      it "should return an array" do
-        expect(ep.predict_email("Sunwoo Yang", "google.com")).to be_kind_of(Array)
-      end
 
       context "for alphasights employees" do
         it "should return the proper email" do
@@ -69,21 +49,9 @@ describe EmailPredictor do
       let(:unavailable_workplace) { ep.predict_email("Sunwoo Yang", "whatever.com") }
 
       it "should return 'No data availble for whatever.com'" do
-        expect( unavailable_workplace ).to eq("No data availble for whatever.com")
+        expect( unavailable_workplace ).to eq("No data available for whatever.com")
       end
 
-    end
-
-  end
-
-  describe "#data_available?" do
-
-    it "should return false when workplace doesn't exist in training data" do
-      expect( ep.send(:data_available?, "whatever.com") ).to be_false
-    end
-
-    it "should return true when workplace does exist in training data" do
-      expect( ep.send(:data_available?, "google.com") ).to be_true
     end
 
   end
@@ -100,68 +68,13 @@ describe EmailPredictor do
     end
   end
 
-  describe "#determine_workplace" do
-
-    context "given an email" do
-      let(:workplace) { ep.send(:determine_workplace, "yangsunwoo@alphasights.com") }
-
-      it "should return workplace.com" do
-        expect( workplace ).to eq("alphasights.com")
-      end
-
-    end
-
-  end
-
-  describe "pattern checkers" do
-    let(:f_name) { "sunwoo" }
-    let(:l_name) { "yang" }
-
-    describe "#check_first_name_dot_last_name" do
-      let(:fndln_email) { "sunwoo.yang@gmail.com" }
-      let(:fndln_pattern) { ep.send(:check_first_name_dot_last_name, f_name, l_name, fndln_email) }
-
-      it "should return 'first_name_dot_last_name'" do
-        expect( fndln_pattern ).to eq("first_name_dot_last_name")
-      end
-    end
-
-    describe "#check_first_name_dot_last_initial" do
-      let(:fndli_email) { "sunwoo.y@gmail.com" }
-      let(:fndli_pattern) { ep.send(:check_first_name_dot_last_initial, f_name, l_name, fndli_email) }
-
-      it "should return 'first_name_dot_last_name'" do
-        expect( fndli_pattern ).to eq("first_name_dot_last_initial")
-      end
-    end
-
-    describe "#check_first_initial_dot_last_name" do
-      let(:fidln_email) { "s.yang@gmail.com" }
-      let(:fidln_pattern) { ep.send(:check_first_initial_dot_last_name, f_name, l_name, fidln_email) }
-
-      it "should return 'first_initial_dot_last_name'" do
-        expect( fidln_pattern ).to eq("first_initial_dot_last_name")
-      end
-    end
-
-    describe "#check_first_initial_dot_last_initial" do
-      let(:fidli_email) { "s.y@gmail.com" }
-      let(:fidli_pattern) { ep.send(:check_first_initial_dot_last_initial, f_name, l_name, fidli_email) }
-
-      it "should return 'first_initial_dot_last_initial'" do
-        expect( fidli_pattern ).to eq("first_initial_dot_last_initial")
-      end
-    end
-
-  end
-
   describe "#convert_pattern_to_email" do
     let(:f_name) { "sunwoo" }
     let(:l_name) { "yang" }
     let(:work_domain) { "google.com" }
 
     context "given first_name_dot_last_name" do
-      let(:fndln_pattern) { "first_name_dot_last_name" }
+      let(:fndln_pattern) { :first_name_dot_last_name }
       let(:converted_fndln) do
         ep.send(:convert_pattern_to_email, f_name, l_name, fndln_pattern, work_domain)
       end
@@ -172,7 +85,7 @@ describe EmailPredictor do
     end
 
     context "given first_name_dot_last_initial" do
-      let(:fndli_pattern) { "first_name_dot_last_initial" }
+      let(:fndli_pattern) { :first_name_dot_last_initial }
       let(:converted_fndli) do
         ep.send(:convert_pattern_to_email, f_name, l_name, fndli_pattern, work_domain)
       end
@@ -183,7 +96,7 @@ describe EmailPredictor do
     end
 
     context "given first_initial_dot_last_name" do
-      let(:fidln_pattern) { "first_initial_dot_last_name" }
+      let(:fidln_pattern) { :first_initial_dot_last_name }
       let(:converted_fidln) do
         ep.send(:convert_pattern_to_email, f_name, l_name, fidln_pattern, work_domain)
       end
@@ -194,7 +107,7 @@ describe EmailPredictor do
     end
 
     context "given first_initial_dot_last_name" do
-      let(:fidli_pattern) { "first_initial_dot_last_initial" }
+      let(:fidli_pattern) { :first_initial_dot_last_initial }
       let(:converted_fidli) do
         ep.send(:convert_pattern_to_email, f_name, l_name, fidli_pattern, work_domain)
       end
