@@ -4,10 +4,10 @@ This is a program that will allow the user to predict email addresses of a perso
 
 ###How to use
 
-Instantiate the EmailPredictor class with your training data
+Instantiate the PatternFinder class with your sample dataset and call #parse_data
 
 ```ruby
-training_data = {
+dataset = {
   "John Ferguson" => "john.ferguson@alphasights.com",
   "Damon Aw" => "damon.aw@alphasights.com",
   "Linda Li" => "linda.li@alphasights.com",
@@ -16,7 +16,14 @@ training_data = {
   "Steve Jobs" => "s.j@apple.com"
 }
 
-ep = EmailPredictor.new(training_data)
+pf = PatternFinder.new(dataset)
+parsed_data = pf.parse_data
+```
+
+Use the parsed_data to instantiate a new EmailPredictor
+
+```
+ep = EmailPredictor.new(parsed_data)
 ```
 
 Call #predict_email with the name of the person and and their workplace domain name as arguments.
